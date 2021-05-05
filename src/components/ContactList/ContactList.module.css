@@ -1,0 +1,21 @@
+.contacts {
+  margin: 0 auto;
+  padding: 20px;
+  width: 350px;
+}
+.contact {
+  display: flex;
+}
+.contact + .contact {
+  margin: 10px 0 0 0;
+}
+.removeButton {
+  margin: 0 0 0 auto;
+  min-height: 20px;
+  min-width: 80px;
+  border-radius: 5px;
+}
+.removeButton:hover {
+  cursor: pointer;
+  outline: 1px solid black;
+}

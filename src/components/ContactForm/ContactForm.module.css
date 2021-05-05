@@ -1,0 +1,6 @@
+.form {
+  margin: 20px 0;
+  padding: 20px;
+  width: 350px;
+  border: 1px solid var(--secondary);
+}
