@@ -22,7 +22,7 @@ const Filter = props => {
           type="text"
           value={filter}
           onChange={e => filterUpdate(e.target.value)}
-          placeHolder="Name or Surname"
+          placeholder="Name or Surname"
         />
       </Form.Group>
     </Form>

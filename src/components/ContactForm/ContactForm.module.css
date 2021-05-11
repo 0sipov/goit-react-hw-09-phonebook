@@ -4,3 +4,7 @@
   width: 350px;
   border: 1px solid var(--secondary);
 }
+.button {
+  display: block;
+  margin: auto;
+}

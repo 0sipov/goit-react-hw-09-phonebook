@@ -9,3 +9,8 @@ body {
   padding: 20px;
   background-color: #e4e4e4;
 }
+.spinnerPosition {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
