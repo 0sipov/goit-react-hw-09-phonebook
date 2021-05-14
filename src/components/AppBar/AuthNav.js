@@ -2,7 +2,7 @@ import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Nav } from 'react-bootstrap';
 
-const AuthNav = () => {
+export default function AuthNav() {
   return (
     <Nav>
       <LinkContainer to="/login" exact>
@@ -13,6 +13,4 @@ const AuthNav = () => {
       </LinkContainer>
     </Nav>
   );
-};
-
-export default AuthNav;
+}

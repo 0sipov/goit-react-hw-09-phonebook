@@ -1,6 +1,4 @@
 const getIsAuthorization = state => {
-  // return false;
-  // return true;
   return state.auth.isAuthorization;
 };
 

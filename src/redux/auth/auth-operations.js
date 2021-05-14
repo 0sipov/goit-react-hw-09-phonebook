@@ -19,7 +19,8 @@ const register = credentials => async dispatch => {
     token.set(response.data.token);
     dispatch(actions.registerSuccess(response.data));
   } catch (error) {
-    dispatch(actions.registerError(error.message));
+    console.log(error);
+    actions.loginError(alert('Something went wrong. Try again later'));
   }
 };
 
@@ -27,11 +28,10 @@ const login = credentials => async dispatch => {
   dispatch(actions.loginRequest());
   try {
     const response = await axios.post('/users/login', credentials);
-    // console.log(response.data);
     token.set(response.data.token);
     dispatch(actions.loginSuccess(response.data));
   } catch (error) {
-    dispatch(actions.loginError(console.log(error.message)));
+    actions.loginError(alert('Something went wrong. Try again later'));
   }
 };
 
@@ -42,7 +42,7 @@ const logout = () => async dispatch => {
     token.unset();
     dispatch(actions.logoutSuccess());
   } catch (error) {
-    dispatch(actions.logoutError(console.log(error.message)));
+    actions.loginError(alert('Something went wrong. Try again later'));
   }
 };
 
@@ -59,7 +59,7 @@ const getCurrentUser = () => async (dispatch, getState) => {
     const response = await axios.get('/users/current');
     dispatch(actions.getCurrentUserSuccess(response.data));
   } catch (error) {
-    dispatch(actions.getCurrentUserError(console.log(error.message)));
+    actions.loginError(alert('Something went wrong. Try again later'));
   }
 };
 

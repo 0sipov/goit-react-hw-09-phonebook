@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from '../AppBar/AppBar';
 import operations from '../../redux/auth/auth-operations';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,10 +26,11 @@ const RegistrationView = lazy(() =>
   ),
 );
 
-const App = props => {
+export default function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
-    props.onGetCurrentUser();
-  });
+    dispatch(operations.getCurrentUser());
+  }, [dispatch]);
   return (
     <Container>
       <AppBar />
@@ -65,10 +66,4 @@ const App = props => {
       </Suspense>
     </Container>
   );
-};
-
-const mapDispatchToProps = {
-  onGetCurrentUser: operations.getCurrentUser,
-};
-
-export default connect(null, mapDispatchToProps)(App);
+}

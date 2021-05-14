@@ -1,3 +1,7 @@
+.form {
+  max-width: 350px;
+}
+
 .input {
   display: block;
 }

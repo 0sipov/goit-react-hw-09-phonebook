@@ -1,11 +1,12 @@
-import React, { Component, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import operations from '../../redux/auth/auth-operations';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
+import validation from '../../utilities/form_validaion';
 import styles from './RegistrationView.module.css';
 
-const RegistrationView = props => {
-  const { onRegister } = props;
+export default function RegistrationView() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +27,13 @@ const RegistrationView = props => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    onRegister({ email, name, password });
+    if (
+      validation.isEmptyString(email, name, password) ||
+      !validation.isPassValid(password)
+    ) {
+      return;
+    }
+    dispatch(operations.register({ email, name, password }));
   };
   return (
     <Form
@@ -69,12 +76,11 @@ const RegistrationView = props => {
       <Button variant="primary" type="submit" className={styles.loginButton}>
         Submit
       </Button>
+      {validation.isEmptyString(email, name, password) && (
+        <Alert variant="danger" className={styles.alert}>
+          <p>Fill in all the fields, please</p>
+        </Alert>
+      )}
     </Form>
   );
-};
-
-const mapDispatchToProps = {
-  onRegister: operations.register,
-};
-
-export default connect(null, mapDispatchToProps)(RegistrationView);
+}

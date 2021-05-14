@@ -4,7 +4,7 @@ import Filter from '../../components/Filter';
 import ContactList from '../../components/ContactList';
 import styles from './ContactsView.module.css';
 
-const ContactsView = () => {
+export default function ContactsView() {
   return (
     <div>
       <h1 className={styles.title}>Phone book</h1>
@@ -14,6 +14,4 @@ const ContactsView = () => {
       <ContactList />
     </div>
   );
-};
-
-export default ContactsView;
+}

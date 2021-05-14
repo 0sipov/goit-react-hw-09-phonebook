@@ -1,10 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import selectors from '../../redux/auth/auth-selectors';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 
-const Navigation = ({ isAuthorization }) => {
+export default function Navigation() {
+  const isAuthorization = useSelector(state =>
+    selectors.getIsAuthorization(state),
+  );
   return (
     <Nav className="mr-auto mb-auto mt-auto">
       <LinkContainer to="/">
@@ -17,12 +20,4 @@ const Navigation = ({ isAuthorization }) => {
       )}
     </Nav>
   );
-};
-
-const mapStateToProps = state => {
-  return {
-    isAuthorization: selectors.getIsAuthorization(state),
-  };
-};
-
-export default connect(mapStateToProps)(Navigation);
+}

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './ContactList.module.css';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   removeContact,
   fetchContacts,
@@ -9,10 +8,13 @@ import {
 import contactsSelectors from '../../redux/contacts/contacts-selectors';
 import { Spinner, Button } from 'react-bootstrap';
 
-const ContactList = props => {
-  const { isLoading, filtredContacts, onRemoveContact, fetchContacts } = props;
-
-  useEffect(() => fetchContacts(), []);
+export default function ContactList() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => contactsSelectors.getLoading(state));
+  const filtredContacts = useSelector(state =>
+    contactsSelectors.getFiltredContacts(state),
+  );
+  useEffect(() => dispatch(fetchContacts()), [dispatch]);
   return (
     <ul className={styles.contacts}>
       {filtredContacts.map(elem => {
@@ -25,10 +27,9 @@ const ContactList = props => {
               className={styles.removeButton}
               type="button"
               onClick={() => {
-                onRemoveContact(elem.id);
+                dispatch(removeContact(elem.id));
               }}
             >
-              {console.log(elem)}
               {isLoading ? (
                 <Spinner animation="border" variant="light" size="sm" />
               ) : (
@@ -40,33 +41,4 @@ const ContactList = props => {
       })}
     </ul>
   );
-};
-
-const mapStateToProps = state => ({
-  isLoading: contactsSelectors.getLoading(state),
-  filtredContacts: contactsSelectors.getFiltredContacts(state),
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onRemoveContact: contactId => {
-      return dispatch(removeContact(contactId));
-    },
-    fetchContacts: () => {
-      return dispatch(fetchContacts());
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
-
-ContactList.propTypes = {
-  onRemoveContact: PropTypes.func,
-  filtredContacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      number: PropTypes.string,
-      id: PropTypes.string,
-    }),
-  ),
-};
+}

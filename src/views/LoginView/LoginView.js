@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import operations from '../../redux/auth/auth-operations';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
+import validation from '../../utilities/form_validaion';
 import styles from './LoginView.module.css';
 
-const LoginView = props => {
-  // const { onLogIn } = props;
+export default function LoginView() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleChange = e => {
@@ -20,10 +21,15 @@ const LoginView = props => {
         return;
     }
   };
-  console.log(props.onLogin);
   const handleSubmit = e => {
     e.preventDefault();
-    props.onLogin({ email, password });
+    if (
+      validation.isEmptyString(email, password) ||
+      !validation.isPassValid(password)
+    ) {
+      return;
+    }
+    dispatch(operations.login({ email, password }));
   };
   return (
     <Form
@@ -55,12 +61,11 @@ const LoginView = props => {
       <Button variant="primary" type="submit" className={styles.loginButton}>
         Submit
       </Button>
+      {validation.isEmptyString(email, password) && (
+        <Alert variant="danger" className={styles.alert}>
+          <p>Fill in all the fields, please</p>
+        </Alert>
+      )}
     </Form>
   );
-};
-
-const mapDispatchToProps = {
-  onLogin: operations.login,
-};
-
-export default connect(null, mapDispatchToProps)(LoginView);
+}

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import styles from './ContactForm.module.css';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createContact } from '../../redux/contacts/contacts-operations';
 import contactsSelectors from '../../redux/contacts/contacts-selectors';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
+import validation from '../../utilities/form_validaion';
 
-const ContactForm = props => {
+export default function ContactForm() {
+  const items = useSelector(state => contactsSelectors.getItems(state));
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
   const handleChange = e => {
     switch (e.target.name) {
       case 'name':
@@ -22,19 +24,21 @@ const ContactForm = props => {
     }
   };
   const handleSubmit = e => {
-    const { onCreateContact } = props;
     e.preventDefault();
+    if (validation.isEmptyString(name, number)) {
+      return;
+    }
     const clearContactInput = () => {
       setName('');
       setNumber('');
     };
     const isContainName = name => {
       name = name.toLowerCase();
-      return props.items.find(e => e.name.toLowerCase() === name);
+      return items.find(e => e.name.toLowerCase() === name);
     };
     isContainName(name)
       ? alert(`Contact ${name} already exists.`)
-      : onCreateContact({ name, number });
+      : dispatch(createContact({ name, number }));
     clearContactInput();
   };
   return (
@@ -70,18 +74,4 @@ const ContactForm = props => {
       </Button>
     </Form>
   );
-};
-
-const mapStateToProps = state => ({
-  items: contactsSelectors.getItems(state),
-});
-
-const mapDispatchToProps = dispatch => {
-  return { onCreateContact: contact => dispatch(createContact(contact)) };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
-
-ContactForm.propTypes = {
-  onCreateContact: PropTypes.func,
-};
+}
